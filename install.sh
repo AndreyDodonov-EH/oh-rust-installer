@@ -46,8 +46,13 @@ detect_platform() {
 }
 
 PLATFORM=$(detect_platform)
-VERSION="latest"
-DOWNLOAD_URL="https://github.com/yourusername/oh-rust/releases/download/${VERSION}/oh-rust-${VERSION}-${PLATFORM}.tar.gz"
+
+# For latest version
+DOWNLOAD_URL="https://github.com/AndreyDodonov-EH/oh-rust/releases/latest/download/oh-rust-latest-${PLATFORM}.tar.gz"
+
+# For exact version. ToDo: provide parameter to script
+# VERSION="1.88.0-oh-0.0.1"
+# DOWNLOAD_URL="https://github.com/AndreyDodonov-EH/oh-rust/releases/download/${VERSION}/oh-rust-latest-${PLATFORM}.tar.gz"
 
 echo "Detected platform: $PLATFORM"
 echo "Downloading Oh-Rust..."
