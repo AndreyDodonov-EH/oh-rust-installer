@@ -95,13 +95,53 @@
             margin-bottom: 3rem;
         }
         
+        .install-wrapper {
+            position: relative;
+            margin-top: 0.5rem;
+        }
+        
         .install-command {
             font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
             font-size: 0.875rem;
             color: var(--text-color);
             word-break: break-all;
             display: block;
-            margin-top: 0.5rem;
+            padding-right: 2.5rem;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 50%;
+            right: 0.5rem;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--subtle-text);
+            cursor: pointer;
+            padding: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+        
+        .copy-button:hover {
+            color: var(--text-color);
+        }
+        
+        .copy-button.copied {
+            color: #1a7f37;
+        }
+        
+        @media (prefers-color-scheme: dark) {
+            .copy-button.copied {
+                color: #3fb950;
+            }
+        }
+        
+        .copy-icon {
+            width: 16px;
+            height: 16px;
         }
         
         .github-link {
@@ -164,7 +204,15 @@
         
         <div class="install-section">
             <strong>Install Oh-Rust:</strong>
-            <code class="install-command">curl --proto '=https' --tlsv1.2 -sSf https://oh-rust.com/install.sh | sh</code>
+            <div class="install-wrapper">
+                <code class="install-command">curl --proto '=https' --tlsv1.2 -sSf https://oh-rust.com/install.sh | sh</code>
+                <button class="copy-button" onclick="copyCommand()" title="Copy to clipboard">
+                    <svg class="copy-icon" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+                        <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
         
         <div class="github-link">
@@ -176,5 +224,31 @@
             </a>
         </div>
     </main>
+    
+    <script>
+        function copyCommand() {
+            const command = "curl --proto '=https' --tlsv1.2 -sSf https://oh-rust.com/install.sh | sh";
+            navigator.clipboard.writeText(command).then(() => {
+                const button = document.querySelector('.copy-button');
+                const originalHTML = button.innerHTML;
+                
+                // Change to checkmark icon
+                button.classList.add('copied');
+                button.innerHTML = `
+                    <svg class="copy-icon" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+                    </svg>
+                `;
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+    </script>
 </body>
 </html>
